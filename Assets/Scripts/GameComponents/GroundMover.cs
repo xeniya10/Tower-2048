@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class GroundMover : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public IEnumerator MoveGroundDown()
     {
-        
+        for (float step = 0; step < 0.45f; step += 0.01f)
+        {
+            this.transform.position += Vector3.down * step;
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator MoveGroundUp()
     {
-        
+        for (float step = 0; step < 0.2f; step += 0.01f)
+        {
+            this.transform.position += Vector3.up * step;
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }

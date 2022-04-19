@@ -4,28 +4,28 @@ using UnityEngine;
 
 public static class NumberGenerator
 {
-    public static int GenerateBlockNumber()
+    public static int GenerateBlockNumber(List<int> BlockNumberList)
     {
-        var minPower = CalculateMinPower();
-        var maxPower = CalculateMaxPower();
+        var minPower = CalculateMinPower(BlockNumberList);
+        var maxPower = CalculateMaxPower(BlockNumberList);
         var randomPower = Random.Range(minPower, maxPower);
         int blockNumber = (int)Mathf.Pow(2, randomPower);
         return blockNumber;
     }
-    private static int CalculateMaxPower()
+    private static int CalculateMaxPower(List<int> BlockNumberList)
     {
         int maxPower = 3;
-        int maxPowerInList = FindMaxPowerOfBlocks();
+        int maxPowerInList = FindMaxPowerOfBlocks(BlockNumberList);
         if (maxPowerInList > 5)
         {
             maxPower = maxPowerInList - 1;
         }
         return maxPower;
     }
-    private static int CalculateMinPower()
+    private static int CalculateMinPower(List<int> BlockNumberList)
     {
         int minPower = 1;
-        int maxPowerInList = FindMaxPowerOfBlocks();
+        int maxPowerInList = FindMaxPowerOfBlocks(BlockNumberList);
         if (maxPowerInList > 5)
         {
             minPower = maxPowerInList - 3;
@@ -33,10 +33,8 @@ public static class NumberGenerator
         return minPower;
     }
 
-    public static int FindMaxPowerOfBlocks()
+    public static int FindMaxPowerOfBlocks(List<int> BlockNumberList)
     {
-        BlockController controller = new BlockController();
-        var BlockNumberList = controller.BlockNumberList;
         int maxBlockNumber = 0;
         for (int i = 0; i < BlockNumberList.Count; i++)
         {

@@ -5,11 +5,11 @@ using TMPro;
 
 public class BlockCombiner : MonoBehaviour
 {
-    private AudioSource CombineSound;
+    public AudioSource CombineSound;
 
     public void CombineBlocks(List<Block> BlockList, List<int> BlockNumberList)
     {
-        for (int i = 0; i < BlockNumberList.Count; i++)
+        for (int i = 0; i < BlockNumberList.Count - 1; i++)
         {
             for (int j = i + 1; j < BlockNumberList.Count; j++)
             {
@@ -33,7 +33,7 @@ public class BlockCombiner : MonoBehaviour
                     }
                 }
             }
-        }
 
+        }
     }
 }

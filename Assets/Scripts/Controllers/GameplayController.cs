@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public BlockController BlockController;
+    public GroundController GroundController;
+
+    private void Start()
     {
-        
+        BlockController.GenerateBlock();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTouchScreen()
     {
-        
+        BlockController.ThrowBlock();
+        GroundController.MoveGroundControl();
     }
 }
