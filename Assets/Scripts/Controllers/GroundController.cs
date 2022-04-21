@@ -4,23 +4,35 @@ using UnityEngine;
 
 public class GroundController : MonoBehaviour
 {
-    public BlockController BlockController;
     public GroundMover GroundMover;
     public TowerTicker TowerTicker;
-    public void MoveGroundControl()
+    private float _maxBlockPosition = -7f;
+    private float _minBlockPosition = -40f;
+
+    public bool isTooHigh(float TopTowerBlockPosition)
     {
-        var blocks = BlockController.BlockList;
-
-        if (blocks.Count > 2 && Vector3.Distance(blocks[blocks.Count - 1].transform.position, blocks[blocks.Count - 2].transform.position) < 18f)
+        if (TopTowerBlockPosition > _maxBlockPosition)
         {
-            StartCoroutine(GroundMover.MoveGroundDown());
-            TowerTicker.TowerAngle += 0.06f;
-            TowerTicker.TowerSpeed += 0.03f;
+            return true;
         }
-
-        if (blocks.Count > 10 && Vector3.Distance(blocks[blocks.Count - 1].transform.position, blocks[blocks.Count - 2].transform.position) > 35f)
+        return false;
+    }
+    public bool isTooLow(float TopTowerBlockPosition)
+    {
+        if (TopTowerBlockPosition < _minBlockPosition)
         {
-            StartCoroutine(GroundMover.MoveGroundUp());
+            return true;
         }
+        return false;
+    }
+    public void MoveGroundDown(float TopTowerBlockPosition)
+    {
+        var difference = Mathf.Abs(TopTowerBlockPosition - _maxBlockPosition) + 3f;
+        StartCoroutine(GroundMover.DownGround(difference));
+    }
+    public void MoveGroundUp(float TopTowerBlockPosition)
+    {
+        var difference = Mathf.Abs(TopTowerBlockPosition - _minBlockPosition) + 3f;
+        StartCoroutine(GroundMover.UpGround(difference));
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TowerTicker : MonoBehaviour
 {
-    [HideInInspector]
-    public float TowerAngle = 0f;
-    [HideInInspector]
-    public float TowerSpeed = 0f;
+    private float _towerAngle = 0f;
+    private float _towerSpeed = 0f;
+    private float _stepTowerAngle = 0.02f;
+    private float _stepTowerSpeed = 0.01f;
 
     public void Update()
     {
@@ -16,9 +16,19 @@ public class TowerTicker : MonoBehaviour
     }
     private Quaternion SwayTower(float time)
     {
-        Quaternion towerStartAngle = Quaternion.AngleAxis(TowerAngle, Vector3.forward);
-        Quaternion towerEndAngle = Quaternion.AngleAxis(-TowerAngle, Vector3.forward);
-        var rotation = Quaternion.Lerp(towerStartAngle, towerEndAngle, (Mathf.Sin(time * TowerSpeed)) / 2 + 0.5f);
+        Quaternion towerStartAngle = Quaternion.AngleAxis(_towerAngle, Vector3.forward);
+        Quaternion towerEndAngle = Quaternion.AngleAxis(-_towerAngle, Vector3.forward);
+        var rotation = Quaternion.Lerp(towerStartAngle, towerEndAngle, (Mathf.Sin(time * _towerSpeed)) / 2 + 0.5f);
         return rotation;
+    }
+    public void UpTickerTower()
+    {
+        _towerAngle += _stepTowerAngle;
+        _towerSpeed += _stepTowerSpeed;
+    }
+    public void DownTickerTower()
+    {
+        _towerAngle -= _stepTowerAngle;
+        _towerSpeed -= _stepTowerSpeed;
     }
 }

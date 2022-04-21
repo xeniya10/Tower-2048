@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class GroundMover : MonoBehaviour
 {
-    public IEnumerator MoveGroundDown()
+    public IEnumerator DownGround(float difference)
     {
-        for (float step = 0; step < 0.45f; step += 0.01f)
+        float finalGroundPosition = this.transform.position.y - difference;
+
+        for (float step = 0; this.transform.position.y > finalGroundPosition; step += 0.01f)
         {
             this.transform.position += Vector3.down * step;
             yield return new WaitForSeconds(0.01f);
         }
     }
 
-    public IEnumerator MoveGroundUp()
+    public IEnumerator UpGround(float difference)
     {
-        for (float step = 0; step < 0.2f; step += 0.01f)
+        float finalGroundPosition = this.transform.position.y + difference;
+
+        for (float step = 0; this.transform.position.y < finalGroundPosition; step += 0.01f)
         {
             this.transform.position += Vector3.up * step;
             yield return new WaitForSeconds(0.01f);

@@ -16,9 +16,12 @@ public class BlockCombiner : MonoBehaviour
                 if (BlockNumberList[i] == BlockNumberList[j])
                 {
                     float blocksDistance = Vector3.Distance(BlockList[i].transform.position, BlockList[j].transform.position);
-                    if (blocksDistance < 7.6f)
+
+                    if (blocksDistance < 25f)
                     {
                         CombineSound.Play();
+
+                        // BlockList[j].OnTriggerEvent -= CheckNumbers;
 
                         Destroy(BlockList[j].gameObject);
                         BlockList.RemoveAt(j);

@@ -9,7 +9,9 @@ public class BlockController : MonoBehaviour
     public Transform BlockTower;
     public Block BlockPrefab;
     public BlockCombiner BlockCombiner;
+    public TowerTicker TowerTicker;
     public AudioSource ThrowingSound;
+    public GroundController GroundController;
 
     [HideInInspector]
     public List<Block> BlockList = new List<Block>();
@@ -22,7 +24,9 @@ public class BlockController : MonoBehaviour
         Block block = BlockPrefab.CreateBlock(BlockPrefab, BlockTicker);
         int blockNumber = NumberGenerator.GenerateBlockNumber(BlockNumberList);
         block.SetBlockNumber(blockNumber);
+
         BlockTicker.gameObject.SetActive(true);
+
         BlockNumberList.Add(blockNumber);
         BlockList.Add(block);
     }
@@ -30,36 +34,66 @@ public class BlockController : MonoBehaviour
     {
         ThrowingSound.Play();
 
-        var block = BlockList[BlockList.Count - 1].transform;
-        block.rotation = Quaternion.Euler(0, 0, 0);
+        var block = BlockList[BlockList.Count - 1];
+        block.transform.rotation = Quaternion.Euler(0, 0, 0);
+        SetRigidbodyOfThrowingBlock(block);
+        block.transform.SetParent(BlockTower);
 
-        var blockRigidbody = block.GetComponent<Rigidbody>();
-        blockRigidbody.useGravity = true;
-        blockRigidbody.isKinematic = false;
-        blockRigidbody.velocity = new Vector3(0, -40, 0);
+        block.OnTriggerEvent += CheckNumbers;
+        block.OnTriggerEvent += CheckDistance;
 
-        block.SetParent(BlockTower);
-        BlockTicker.gameObject.SetActive(false);
-
-        if (blockRigidbody.velocity == new Vector3(0, 0, 0))
-        {
-            CheckNumbers();
-        }
+        PrepareBeforeCreationBlock();
 
         StartCoroutine(CreateNewBlockAfterPause());
     }
     private IEnumerator CreateNewBlockAfterPause()
     {
-        yield return new WaitForSeconds(1.5f);
-
-        var blockTicker = BlockTicker.gameObject.GetComponent<BlockTicker>();
-        BlockTicker.rotation = blockTicker.ResetAngleOfTicker();
-
+        yield return new WaitForSeconds(1);
         GenerateBlock();
     }
-    private void CheckNumbers()
+    private void PrepareBeforeCreationBlock()
+    {
+        var blockTicker = BlockTicker.gameObject.GetComponent<BlockTicker>();
+        BlockTicker.rotation = blockTicker.ResetAngleOfTicker();
+        BlockTicker.gameObject.SetActive(false);
+    }
+    public void CheckNumbers()
     {
         BlockCombiner.CombineBlocks(BlockList, BlockNumberList);
+    }
+    private void SetRigidbodyOfThrowingBlock(Block block)
+    {
+        var blockRigidbody = block.transform.GetComponent<Rigidbody>();
+        blockRigidbody.useGravity = true;
+        blockRigidbody.isKinematic = false;
+        blockRigidbody.velocity = new Vector3(0, -100, 0);
+    }
+    private void CheckDistance()
+    {
+        if (GroundController.isTooHigh(FindTopBlockTower()))
+        {
+            GroundController.MoveGroundDown(FindTopBlockTower());
+            TowerTicker.DownTickerTower();
+        }
+        if (GroundController.isTooLow(FindTopBlockTower()))
+        {
+            GroundController.MoveGroundUp(FindTopBlockTower());
+            TowerTicker.UpTickerTower();
+        }
+    }
+
+    private float FindTopBlockTower()
+    {
+        float maxY = BlockList[0].transform.position.y;
+        for (int i = 0; i < BlockList.Count - 1; i++)
+        {
+            if (maxY < BlockList[i].transform.position.y)
+            {
+                maxY = BlockList[i].transform.position.y;
+            }
+        }
+        Debug.Log(maxY);
+        return maxY;
     }
 }
 
