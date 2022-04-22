@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TowerTicker : MonoBehaviour
 {
     private float _towerAngle = 0f;
     private float _towerSpeed = 0f;
-    private float _stepTowerAngle = 0.02f;
-    private float _stepTowerSpeed = 0.01f;
+    private float _stepTowerAngle = 0.005f;
+    private float _stepTowerSpeed = 0.005f;
 
     public void Update()
     {

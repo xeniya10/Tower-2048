@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class RecordsWindow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public delegate void CloseButton();
+    public event CloseButton OnClickCloseButtonEvent;
 
-    // Update is called once per frame
-    void Update()
+    public void Show()
     {
-        
+        this.gameObject.SetActive(true);
     }
+    public void OnClickCloseButton() => OnClickCloseButtonEvent?.Invoke();
 }

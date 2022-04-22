@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
@@ -9,15 +7,25 @@ public class Block : MonoBehaviour
     public TextMeshProUGUI TextBlock;
     public delegate void ColliderTrigger();
     public event ColliderTrigger OnTriggerEvent;
-    // TODO properties with set and get block numbers
-    public void SetBlockNumber(int BlockNumber)
+
+    public int BlockNumber
     {
-        TextBlock.SetText($"{BlockNumber}");
+        get
+        {
+            int blockNumber = Int32.Parse(TextBlock.text);
+            return blockNumber;
+        }
+        set
+        {
+            int blockNumber = value;
+            TextBlock.SetText($"{blockNumber}");
+        }
     }
-    public Block CreateBlock(Block BlockPrefab, Transform BlockParent)
+    public Block CreateBlock(Block blockPrefab, Transform blockParent)
     {
-        Block block = Instantiate(BlockPrefab, BlockParent);
+        Block block = Instantiate(blockPrefab, blockParent);
         var blockRigidbody = this.GetComponent<Rigidbody>();
+        blockRigidbody.useGravity = true;
         blockRigidbody.isKinematic = true;
         return block;
     }

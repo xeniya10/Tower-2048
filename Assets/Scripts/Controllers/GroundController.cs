@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundController : MonoBehaviour
@@ -7,7 +5,7 @@ public class GroundController : MonoBehaviour
     public GroundMover GroundMover;
     public TowerTicker TowerTicker;
     private float _maxBlockPosition = -7f;
-    private float _minBlockPosition = -40f;
+    private float _minBlockPosition = -36f;
 
     public bool isTooHigh(float TopTowerBlockPosition)
     {
