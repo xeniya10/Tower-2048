@@ -4,7 +4,7 @@ public class GroundController : MonoBehaviour
 {
     public GroundMover GroundMover;
     public TowerTicker TowerTicker;
-    private float _maxBlockPosition = -7f;
+    private float _maxBlockPosition = -13f;
     private float _minBlockPosition = -36f;
 
     public bool isTooHigh(float TopTowerBlockPosition)
@@ -32,5 +32,9 @@ public class GroundController : MonoBehaviour
     {
         var difference = Mathf.Abs(TopTowerBlockPosition - _minBlockPosition) + 3f;
         StartCoroutine(GroundMover.UpGround(difference));
+    }
+    public void ResetGroundPosition()
+    {
+        GroundMover.SetStartPosition();
     }
 }

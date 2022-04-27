@@ -1,18 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Record : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public TextMeshProUGUI IndexNumber;
+    public TextMeshProUGUI DataTime;
+    public TextMeshProUGUI ScoreNumber;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

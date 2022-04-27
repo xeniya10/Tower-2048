@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BlockController : MonoBehaviour
 {
-    public static BlockController Instance { get; private set; }
     public Transform BlockTicker;
     public Block BlockPrefab;
     public BlockCombiner BlockCombiner;
@@ -14,9 +14,7 @@ public class BlockController : MonoBehaviour
 
     [HideInInspector]
     public List<Block> BlockList = new List<Block>();
-
-    public delegate void SetScoreNumber();
-    public event SetScoreNumber CheckNewScore;
+    public event Action CheckNewScore;
 
     public void GenerateBlock()
     {
@@ -24,6 +22,7 @@ public class BlockController : MonoBehaviour
         int blockNumber = NumberGenerator.GenerateBlockNumber(BlockList);
         block.BlockNumber = blockNumber;
 
+        BlockTicker.rotation = Quaternion.Euler(0, 0, 0);
         BlockTicker.gameObject.SetActive(true);
         BlockList.Add(block);
     }
@@ -47,8 +46,19 @@ public class BlockController : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         CheckNewScore?.Invoke();
-        BlockTicker.rotation = Quaternion.Euler(0, 0, 0);
+        BlockTicker.gameObject.SetActive(false);
         GenerateBlock();
+    }
+    public void ResetBlocks()
+    {
+        for (int i = 0; i < TowerTicker.transform.childCount; i++)
+        {
+            Destroy(TowerTicker.transform.GetChild(i).gameObject);
+        }
+
+        Destroy(BlockTicker.transform.GetChild(0).gameObject);
+        BlockList.Clear();
+        GroundController.ResetGroundPosition();
     }
     public void CheckNumbers()
     {

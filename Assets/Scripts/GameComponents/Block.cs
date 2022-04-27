@@ -5,8 +5,7 @@ using System;
 public class Block : MonoBehaviour
 {
     public TextMeshProUGUI TextBlock;
-    public delegate void ColliderTrigger();
-    public event ColliderTrigger OnTriggerEvent;
+    public event Action OnTriggerEvent;
 
     public int BlockNumber
     {

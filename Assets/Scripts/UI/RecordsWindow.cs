@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class RecordsWindow : MonoBehaviour
 {
-    public delegate void CloseButton();
-    public event CloseButton OnClickCloseButtonEvent;
+    public event Action OnClickCloseButtonEvent;
 
     public void Show()
     {

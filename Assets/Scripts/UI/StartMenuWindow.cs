@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class MenuWindow : MonoBehaviour
+public class StartMenuWindow : MonoBehaviour
 {
-    public delegate void MenuButtons();
-    public event MenuButtons OnClickStartButtonEvent;
-    public event MenuButtons OnClickRecordsButtonEvent;
-    public event MenuButtons OnClickQuitButtonEvent;
+    public event Action OnClickStartButtonEvent;
+    public event Action OnClickRecordsButtonEvent;
+    public event Action OnClickQuitButtonEvent;
 
     public void Show()
     {

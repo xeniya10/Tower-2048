@@ -5,56 +5,101 @@ using UnityEngine;
 public class GameplayController : MonoBehaviour
 {
     public BlockController BlockController;
-    public MenuWindow MenuWindow;
-    public RecordsWindow RecordsWindow;
     public TopUI TopUI;
-    public GameObject Ground;
+    public StartMenuWindow StartMenuWindow;
+    public RecordsWindow RecordsWindow;
+    public TopMenuWindow TopMenuWindow;
+    public EndGameWindow EndGameWindow;
+    public int GameTime = 3;
 
     private void Awake()
     {
+        Time.timeScale = 0;
         Hide();
-        OpenMenu();
+        OpenStartMenu();
     }
-    public void StartPlay()
+    private void StartPlay()
     {
         Hide();
         TopUI.Show();
-        Ground.SetActive(true);
         BlockController.GenerateBlock();
         BlockController.CheckNewScore += SetScore;
-        TopUI.OnClickMenuButtonEvent += OpenMenu;
+        TopUI.OnClickMenuButtonEvent += OpenTopMenu;
+        TopUI.Timer.TimeEndEvent += EndGame;
+        Time.timeScale = 1;
+        TopUI.SetTimerTime(GameTime);
     }
-    public void QuitGame()
+    private void RestartPlay()
+    {
+        ResetGame();
+        StartPlay();
+    }
+    private void PausePlay()
+    {
+        Time.timeScale = 0;
+    }
+    private void ContinuePlay()
+    {
+        Hide();
+        Time.timeScale = 1;
+        TopUI.Show();
+        TopUI.SetTimerTime(GameTime);
+    }
+    private void ResetGame()
+    {
+        BlockController.ResetBlocks();
+        TopUI.ResetTimerTime();
+        TopUI.ScoreNumber = 0;
+    }
+    private void EndGame()
+    {
+        EndGameWindow.Show(TopUI.ScoreNumber);
+        EndGameWindow.SetResult(false);
+        EndGameWindow.OnClickCloseButtonEvent += OpenStartMenu;
+    }
+    private void QuitGame()
     {
         UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
-    public void OpenMenu()
+    private void OpenStartMenu()
     {
         Hide();
-        MenuWindow.Show();
-        MenuWindow.OnClickStartButtonEvent += StartPlay;
-        MenuWindow.OnClickRecordsButtonEvent += OpenRecords;
-        MenuWindow.OnClickQuitButtonEvent += QuitGame;
+        StartMenuWindow.Show();
+        StartMenuWindow.OnClickStartButtonEvent += StartPlay;
+        StartMenuWindow.OnClickRecordsButtonEvent += OpenRecords;
+        StartMenuWindow.OnClickQuitButtonEvent += QuitGame;
     }
-    public void OpenRecords()
+    private void OpenTopMenu()
+    {
+        PausePlay();
+        Hide();
+        TopUI.Show();
+        TopMenuWindow.Show();
+        TopMenuWindow.OnClickContinueButtonEvent += ContinuePlay;
+        TopMenuWindow.OnClickRestartButtonEvent += RestartPlay;
+        TopMenuWindow.OnClickRecordsButtonEvent += OpenRecords;
+        TopMenuWindow.OnClickQuitButtonEvent += QuitGame;
+    }
+    private void OpenRecords()
     {
         Hide();
         RecordsWindow.Show();
-        RecordsWindow.OnClickCloseButtonEvent += OpenMenu;
+        RecordsWindow.OnClickCloseButtonEvent += OpenStartMenu;
     }
     private void Hide()
     {
-        Ground.SetActive(false);
-        MenuWindow?.gameObject.SetActive(false);
+        TopMenuWindow?.gameObject.SetActive(false);
+        StartMenuWindow?.gameObject.SetActive(false);
         RecordsWindow?.gameObject.SetActive(false);
+        EndGameWindow?.gameObject.SetActive(false);
         TopUI?.gameObject.SetActive(false);
     }
     public void OnTouchScreen()
     {
         BlockController.ThrowBlock();
     }
-    public void SetScore()
+    private void SetScore()
     {
         TopUI.ScoreNumber = NumberGenerator.FindMaxNumberOfBlocks(BlockController.BlockList);
     }
