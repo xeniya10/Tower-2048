@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3521933317125128239}
   m_RootOrder: 1
@@ -92,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -163,6 +164,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5479312183753730909}
   - {fileID: 8030901153209001996}
@@ -297,6 +299,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3521933317125128239}
   m_RootOrder: 2
@@ -415,7 +418,7 @@ GameObject:
   - component: {fileID: 7767314441094676208}
   - component: {fileID: 6326321407196681450}
   m_Layer: 5
-  m_Name: Number
+  m_Name: Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,6 +434,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3521933317125128239}
   m_RootOrder: 0
@@ -564,6 +568,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3521933317125128239}
   m_Father: {fileID: 0}
@@ -586,6 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c398b2fe720341843bbd7573dcd1d95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IndexNumber: {fileID: 6326321407196681450}
-  DataTime: {fileID: 3540149592753664300}
+  PlaceNumber: {fileID: 6326321407196681450}
+  DateTimeRecord: {fileID: 3540149592753664300}
   ScoreNumber: {fileID: 4540556193018689508}
