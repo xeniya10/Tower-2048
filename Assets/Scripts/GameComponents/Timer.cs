@@ -14,10 +14,10 @@ public class Timer : MonoBehaviour
 
 	public void SetTimer(int targetMinuteDuration)
 	{
-		StartCoroutine(Time(targetMinuteDuration));
+		StartCoroutine(GetTime(targetMinuteDuration));
 	}
 
-	private IEnumerator Time(int targetMinuteDuration)
+	private IEnumerator GetTime(int targetMinuteDuration)
 	{
 		int targetSecondDuration = targetMinuteDuration * _secondsPerMinute;
 

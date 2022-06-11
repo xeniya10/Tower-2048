@@ -66,7 +66,7 @@ public class GameplayController : MonoBehaviour
 		EndGameWindow.SetFinalScore(TopUI.Score.GetScore());
 		EndGameWindow.Show();
 
-		if (RecordController.IsNewRecord(TopUI.Score.GetScore()))
+		if (RecordController.IsNewRecord())
 		{
 			EndGameWindow.SetNewRecordText();
 		}

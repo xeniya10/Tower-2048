@@ -6,68 +6,28 @@ using System.Linq;
 public class RecordController : MonoBehaviour
 {
 	public Score Score;
-	public Record RecordPrefab;
+	public Record RecordRowPrefab;
 	public Transform RecordContent;
 
 	private List<Record> _recordRowList = new List<Record>();
 	private List<RecordData> _recordList = new List<RecordData>();
-	private List<RecordData> _deserializedRecordList = new List<RecordData>();
 	private RecordData _recordData = new RecordData();
 	private int _listCapacity = 10;
 
-	int i = 0;
-
 	public event Action OnClickCloseButtonEvent;
 
-	public bool IsNewRecord(int score)
+	public bool IsNewRecord()
 	{
-		// var score = Score.GetScore();
-		i++;
-		Debug.Log(i);
-		if (_recordList.Count == 0 || score > _deserializedRecordList[_deserializedRecordList.Count - 1].Score)
+		var score = Score.GetScore();
+
+		if (_recordList.Count == 0 || score > _recordList[_recordList.Count - 1].Score)
 		{
 			GenerateRecord(score);
+			SaveRecordList();
+			LoadRecordList();
 			return true;
 		}
 		return false;
-	}
-
-	private void LoadRecordList()
-	{
-		_deserializedRecordList = _recordData.Deserialize();
-
-		if (_recordRowList.Count == 0)
-		{
-			CreateRecordRow();
-		}
-
-		// DisableRecordRow();
-
-
-		for (int recordIndex = 0; recordIndex < _deserializedRecordList?.Count; recordIndex++)
-		{
-			var recordRow = _recordRowList[recordIndex];
-			recordRow.Initialize(recordIndex + 1, _deserializedRecordList[recordIndex].DateTime, _deserializedRecordList[recordIndex].Score);
-			recordRow.gameObject.SetActive(true);
-		}
-	}
-
-	private void CreateRecordRow()
-	{
-		for (int recordIndex = 0; recordIndex < _listCapacity; recordIndex++)
-		{
-			var recordRow = Instantiate(RecordPrefab, RecordContent);
-			_recordRowList.Add(recordRow);
-			_recordRowList[recordIndex].gameObject.SetActive(false);
-		}
-	}
-
-	private void DisableRecordRow()
-	{
-		for (int recordIndex = 0; recordIndex < _listCapacity; recordIndex++)
-		{
-			_recordRowList[recordIndex].gameObject.SetActive(false);
-		}
 	}
 
 	public void GenerateRecord(int score)
@@ -76,7 +36,10 @@ public class RecordController : MonoBehaviour
 		record.Score = score;
 		record.DateTime = DateTime.Now;
 		_recordList.Add(record);
-		Debug.Log(_recordList.Count);
+	}
+
+	private void SaveRecordList()
+	{
 		var sortedRecords = _recordList.OrderByDescending(record => record.Score).ToList();
 
 		if (sortedRecords.Count > _listCapacity)
@@ -86,7 +49,33 @@ public class RecordController : MonoBehaviour
 		}
 
 		_recordData.Serialize(sortedRecords);
-		LoadRecordList();
+	}
+
+	private void LoadRecordList()
+	{
+		_recordList = _recordData.Deserialize();
+
+		if (_recordRowList.Count == 0)
+		{
+			CreateRecordRow();
+		}
+
+		for (int recordIndex = 0; recordIndex < _recordList?.Count; recordIndex++)
+		{
+			var recordRow = _recordRowList[recordIndex];
+			recordRow.Initialize(recordIndex + 1, _recordList[recordIndex].DateTime, _recordList[recordIndex].Score);
+			recordRow.gameObject.SetActive(true);
+		}
+	}
+
+	private void CreateRecordRow()
+	{
+		for (int recordIndex = 0; recordIndex < _listCapacity; recordIndex++)
+		{
+			var recordRow = Instantiate(RecordRowPrefab, RecordContent);
+			_recordRowList.Add(recordRow);
+			_recordRowList[recordIndex].gameObject.SetActive(false);
+		}
 	}
 
 	public void Show()
