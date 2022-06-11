@@ -10,19 +10,21 @@ public class EndGameWindow : MonoBehaviour
 	public TextMeshProUGUI Score;
 	public event Action OnClickCloseButtonEvent;
 
-	public void Show(int finalScore)
+	public void Show()
 	{
 		this.gameObject.SetActive(true);
-		SetFinalScore(finalScore);
 	}
-	public void OnClickCloseButton() => OnClickCloseButtonEvent?.Invoke();
 
-	public void SetNewRecordResult() => Result.SetText("New record!\nCongratulations!");
-
-	public void SetNoNewRecordResult() => Result.SetText("Nice game!\nYou are great!");
-
-	private void SetFinalScore(int score)
+	public void SetFinalScore(int score)
 	{
 		Score.SetText($"{score}");
 	}
+
+	public void OnClickCloseButton() => OnClickCloseButtonEvent?.Invoke();
+
+	public void SetNewRecordText() => Result.SetText("New record!\nCongratulations!");
+
+	public void SetNoRecordText() => Result.SetText("Nice game!\nYou are best!");
+
+
 }

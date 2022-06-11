@@ -68,15 +68,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Date/Time
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e79d6273fd21dbe4eb7902d865062766, type: 2}
-  m_sharedMaterial: {fileID: 527024060503535521, guid: e79d6273fd21dbe4eb7902d865062766, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
+  m_sharedMaterial: {fileID: 480582259764489061, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4217528931
-  m_fontColor: {r: 0.38679248, g: 0.38496798, b: 0.38496798, a: 0.9843137}
+    rgba: 4285295724
+  m_fontColor: {r: 0.4245283, g: 0.4221253, b: 0.4221253, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -258,19 +258,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3925872196019981102}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SelectedRecord, Assembly-CSharp
-        m_MethodName: OnRecord
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3954162537744920670
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,8 +327,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e79d6273fd21dbe4eb7902d865062766, type: 2}
-  m_sharedMaterial: {fileID: 527024060503535521, guid: e79d6273fd21dbe4eb7902d865062766, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
+  m_sharedMaterial: {fileID: 480582259764489061, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -364,13 +352,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -474,15 +462,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2dcb6494b03a8f249885e7c09cdc86a8, type: 2}
-  m_sharedMaterial: {fileID: -1501499214079738076, guid: 2dcb6494b03a8f249885e7c09cdc86a8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
+  m_sharedMaterial: {fileID: 480582259764489061, guid: 395a91a2ee6ec2342af6b9fe5b75ad44, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4015018064
-  m_fontColor: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 0.9372549}
+    rgba: 4285295724
+  m_fontColor: {r: 0.4245283, g: 0.4221253, b: 0.4221253, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
@@ -499,13 +487,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535

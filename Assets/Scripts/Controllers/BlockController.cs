@@ -19,13 +19,14 @@ public class BlockController : MonoBehaviour
 	public void GenerateBlock()
 	{
 		Block block = BlockPrefab.CreateBlock(BlockPrefab, BlockTicker);
-		int blockNumber = NumberGenerator.GenerateBlockNumber(BlockList);
+		int blockNumber = NumberManager.GenerateBlockNumber(BlockList);
 		block.BlockNumber = blockNumber;
 
 		BlockTicker.rotation = Quaternion.Euler(0, 0, 0);
 		BlockTicker.gameObject.SetActive(true);
 		BlockList.Add(block);
 	}
+
 	public void ThrowBlock()
 	{
 		ThrowingSound.Play();
@@ -42,6 +43,7 @@ public class BlockController : MonoBehaviour
 
 		StartCoroutine(CreateNewBlockAfterPause());
 	}
+
 	private IEnumerator CreateNewBlockAfterPause()
 	{
 		yield return new WaitForSeconds(1);
@@ -49,6 +51,7 @@ public class BlockController : MonoBehaviour
 		BlockTicker.gameObject.SetActive(false);
 		GenerateBlock();
 	}
+
 	public void ResetBlocks()
 	{
 		for (int i = 0; i < TowerTicker.transform.childCount; i++)
@@ -64,10 +67,12 @@ public class BlockController : MonoBehaviour
 		BlockList.Clear();
 		GroundController.ResetGroundPosition();
 	}
+
 	public void CheckNumbers()
 	{
 		BlockCombiner.CombineBlocks(BlockList);
 	}
+
 	private void CheckDistance()
 	{
 		if (BlockList.Count > 2)
@@ -84,6 +89,7 @@ public class BlockController : MonoBehaviour
 			}
 		}
 	}
+
 	private float FindTopBlockTower()
 	{
 		float maxY = BlockList[0].transform.position.y;

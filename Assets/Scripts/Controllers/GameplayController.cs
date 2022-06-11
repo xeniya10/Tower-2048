@@ -15,56 +15,66 @@ public class GameplayController : MonoBehaviour
 
 	private void Awake()
 	{
-		Time.timeScale = 0;
 		Hide();
 		OpenStartMenu();
+		BlockController.CheckNewScore += SetScore;
+		TopUI.OnClickMenuButtonEvent += OpenTopMenu;
+		TopUI.Timer.TimeEndEvent += EndGame;
 	}
 	private void StartPlay()
 	{
 		ResetGame();
 		Hide();
 		TopUI.Show();
+
 		BlockController.GenerateBlock();
-		BlockController.CheckNewScore += SetScore;
-		TopUI.OnClickMenuButtonEvent += OpenTopMenu;
-		TopUI.Timer.TimeEndEvent += EndGame;
-		Time.timeScale = 2;
-		TopUI.SetTimerTime(GameTime);
+
+		SwitchTimeScale(true);
+		TopUI.Timer.SetTimer(GameTime);
 	}
 
-	private void PausePlay()
+	private void SwitchTimeScale(bool DoTimeRun)
 	{
-		Time.timeScale = 0;
+		switch (DoTimeRun)
+		{
+			case true:
+				Time.timeScale = 3;
+				break;
+			case false:
+				Time.timeScale = 0;
+				break;
+		}
 	}
+
 	private void ContinuePlay()
 	{
 		Hide();
-		Time.timeScale = 1;
+		SwitchTimeScale(true);
 		TopUI.Show();
-		TopUI.SetTimerTime(GameTime);
+		TopUI.Timer.SetTimer(GameTime);
 	}
 	private void ResetGame()
 	{
 		BlockController.ResetBlocks();
-		TopUI.ResetTimerTime(GameTime);
-		TopUI.ScoreNumber = 0;
+		TopUI.Timer.ResetTimer(GameTime);
+		TopUI.Score.ResetScore();
 	}
 	private void EndGame()
 	{
 		Hide();
 
-		var score = TopUI.ScoreNumber;
-		var dateTime = DateTime.Now;
-		EndGameWindow.Show(score);
-		if (RecordController.IsNewRecord(score))
+		EndGameWindow.SetFinalScore(TopUI.Score.GetScore());
+		EndGameWindow.Show();
+
+		if (RecordController.IsNewRecord(TopUI.Score.GetScore()))
 		{
-			EndGameWindow.SetNewRecordResult();
-			RecordController.GenerateRecord(score, dateTime);
+			EndGameWindow.SetNewRecordText();
 		}
 		else
 		{
-			EndGameWindow.SetNoNewRecordResult();
+			EndGameWindow.SetNoRecordText();
 		}
+
 		BlockController.ResetBlocks();
 
 		EndGameWindow.OnClickCloseButtonEvent += OpenStartMenu;
@@ -84,13 +94,12 @@ public class GameplayController : MonoBehaviour
 	}
 	private void OpenTopMenu()
 	{
-		PausePlay();
+		SwitchTimeScale(false);
 		Hide();
 		TopUI.Show();
 		TopMenuWindow.Show();
 		TopMenuWindow.OnClickContinueButtonEvent += ContinuePlay;
 		TopMenuWindow.OnClickRestartButtonEvent += StartPlay;
-		TopMenuWindow.OnClickRecordsButtonEvent += OpenRecords;
 		TopMenuWindow.OnClickQuitButtonEvent += QuitGame;
 	}
 	private void OpenRecords()
@@ -101,6 +110,7 @@ public class GameplayController : MonoBehaviour
 	}
 	private void Hide()
 	{
+		SwitchTimeScale(false);
 		TopMenuWindow?.gameObject.SetActive(false);
 		StartMenuWindow?.gameObject.SetActive(false);
 		RecordController?.gameObject.SetActive(false);
@@ -113,6 +123,6 @@ public class GameplayController : MonoBehaviour
 	}
 	private void SetScore()
 	{
-		TopUI.ScoreNumber = NumberGenerator.FindMaxNumberOfBlocks(BlockController.BlockList);
+		TopUI.Score.SetScore(BlockController.BlockList);
 	}
 }

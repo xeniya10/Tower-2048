@@ -5,12 +5,20 @@ using System;
 
 public class Timer : MonoBehaviour
 {
+	public TextMeshProUGUI TimerText;
+
 	private int _currentTime = 0;
 	private int _secondsPerMinute = 60;
+
 	public event Action TimeEndEvent;
-	public IEnumerator SetTimer(int targetMinuteDuration)
+
+	public void SetTimer(int targetMinuteDuration)
 	{
-		var timer = this.GetComponent<TextMeshProUGUI>();
+		StartCoroutine(Time(targetMinuteDuration));
+	}
+
+	private IEnumerator Time(int targetMinuteDuration)
+	{
 		int targetSecondDuration = targetMinuteDuration * _secondsPerMinute;
 
 		while (_currentTime < targetSecondDuration)
@@ -31,7 +39,7 @@ public class Timer : MonoBehaviour
 			}
 
 			_currentTime++;
-			timer.SetText(String.Format("{0:00}:{1:00}", minutes, seconds));
+			TimerText.SetText(String.Format("{0:00}:{1:00}", minutes, seconds));
 		}
 
 		TimeEndEvent?.Invoke();
