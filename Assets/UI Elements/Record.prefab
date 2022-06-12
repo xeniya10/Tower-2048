@@ -579,6 +579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c398b2fe720341843bbd7573dcd1d95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceNumber: {fileID: 6326321407196681450}
-  DateTimeRecord: {fileID: 3540149592753664300}
-  ScoreNumber: {fileID: 4540556193018689508}
+  PlaceText: {fileID: 6326321407196681450}
+  DateTimeText: {fileID: 3540149592753664300}
+  ScoreText: {fileID: 4540556193018689508}

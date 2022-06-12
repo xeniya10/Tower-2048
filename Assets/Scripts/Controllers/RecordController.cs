@@ -14,7 +14,7 @@ public class RecordController : MonoBehaviour
 	private RecordData _recordData = new RecordData();
 	private int _listCapacity = 10;
 
-	public event Action OnClickCloseButtonEvent;
+	public event Action ClickCloseButtonEvent;
 
 	public bool IsNewRecord()
 	{
@@ -83,5 +83,5 @@ public class RecordController : MonoBehaviour
 		this.gameObject.SetActive(true);
 	}
 
-	public void OnClickCloseButton() => OnClickCloseButtonEvent?.Invoke();
+	public void OnClickCloseButton() => ClickCloseButtonEvent?.Invoke();
 }

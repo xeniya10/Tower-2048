@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour
@@ -11,20 +8,20 @@ public class GameplayController : MonoBehaviour
 	public StartMenuWindow StartMenuWindow;
 	public TopMenuWindow TopMenuWindow;
 	public EndGameWindow EndGameWindow;
+
+	[HideInInspector]
 	public int GameTime = 3;
 
 	private void Awake()
 	{
-		Hide();
+		HideWindows();
+		SubscribeEvent();
 		OpenStartMenu();
-		BlockController.CheckNewScore += SetScore;
-		TopUI.OnClickMenuButtonEvent += OpenTopMenu;
-		TopUI.Timer.TimeEndEvent += EndGame;
 	}
 	private void StartPlay()
 	{
 		ResetGame();
-		Hide();
+		HideWindows();
 		TopUI.Show();
 
 		BlockController.GenerateBlock();
@@ -38,7 +35,7 @@ public class GameplayController : MonoBehaviour
 		switch (DoTimeRun)
 		{
 			case true:
-				Time.timeScale = 3;
+				Time.timeScale = 1;
 				break;
 			case false:
 				Time.timeScale = 0;
@@ -48,7 +45,7 @@ public class GameplayController : MonoBehaviour
 
 	private void ContinuePlay()
 	{
-		Hide();
+		HideWindows();
 		SwitchTimeScale(true);
 		TopUI.Show();
 		TopUI.Timer.SetTimer(GameTime);
@@ -61,23 +58,13 @@ public class GameplayController : MonoBehaviour
 	}
 	private void EndGame()
 	{
-		Hide();
+		HideWindows();
 
 		EndGameWindow.SetFinalScore(TopUI.Score.GetScore());
+		EndGameWindow.SetResult(RecordController.IsNewRecord());
 		EndGameWindow.Show();
 
-		if (RecordController.IsNewRecord())
-		{
-			EndGameWindow.SetNewRecordText();
-		}
-		else
-		{
-			EndGameWindow.SetNoRecordText();
-		}
-
 		BlockController.ResetBlocks();
-
-		EndGameWindow.OnClickCloseButtonEvent += OpenStartMenu;
 	}
 	private void QuitGame()
 	{
@@ -86,31 +73,25 @@ public class GameplayController : MonoBehaviour
 	}
 	private void OpenStartMenu()
 	{
-		Hide();
+		HideWindows();
 		StartMenuWindow.Show();
-		StartMenuWindow.OnClickStartButtonEvent += StartPlay;
-		StartMenuWindow.OnClickRecordsButtonEvent += OpenRecords;
-		StartMenuWindow.OnClickQuitButtonEvent += QuitGame;
 	}
 	private void OpenTopMenu()
 	{
 		SwitchTimeScale(false);
-		Hide();
+		HideWindows();
 		TopUI.Show();
 		TopMenuWindow.Show();
-		TopMenuWindow.OnClickContinueButtonEvent += ContinuePlay;
-		TopMenuWindow.OnClickRestartButtonEvent += StartPlay;
-		TopMenuWindow.OnClickQuitButtonEvent += QuitGame;
 	}
 	private void OpenRecords()
 	{
-		Hide();
+		HideWindows();
 		RecordController.Show();
-		RecordController.OnClickCloseButtonEvent += OpenStartMenu;
 	}
-	private void Hide()
+	private void HideWindows()
 	{
 		SwitchTimeScale(false);
+
 		TopMenuWindow?.gameObject.SetActive(false);
 		StartMenuWindow?.gameObject.SetActive(false);
 		RecordController?.gameObject.SetActive(false);
@@ -123,6 +104,26 @@ public class GameplayController : MonoBehaviour
 	}
 	private void SetScore()
 	{
-		TopUI.Score.SetScore(BlockController.BlockList);
+		TopUI.Score.SetScore(BlockController.TowerBlockList);
+	}
+
+	private void SubscribeEvent()
+	{
+		StartMenuWindow.ClickStartButtonEvent += StartPlay;
+		StartMenuWindow.ClickRecordsButtonEvent += OpenRecords;
+		StartMenuWindow.ClickQuitButtonEvent += QuitGame;
+
+		BlockController.CheckNewScore += SetScore;
+
+		TopUI.ClickMenuButtonEvent += OpenTopMenu;
+		TopUI.Timer.TimeEndEvent += EndGame;
+
+		TopMenuWindow.ClickContinueButtonEvent += ContinuePlay;
+		TopMenuWindow.ClickRestartButtonEvent += StartPlay;
+		TopMenuWindow.ClickQuitButtonEvent += QuitGame;
+
+		RecordController.ClickCloseButtonEvent += OpenStartMenu;
+
+		EndGameWindow.ClickCloseButtonEvent += OpenStartMenu;
 	}
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,7 +14,7 @@ public class Score : MonoBehaviour
 
 	public void SetScore(List<Block> list)
 	{
-		ScoreText.text = NumberManager.FindMaxNumberOfBlocks(list).ToString();
+		ScoreText.text = NumberManager.FindMaxBlockNumber(list).ToString();
 	}
 
 	public int GetScore()

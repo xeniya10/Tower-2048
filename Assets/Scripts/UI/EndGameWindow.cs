@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
 
 public class EndGameWindow : MonoBehaviour
 {
-	public TextMeshProUGUI Result;
-	public TextMeshProUGUI Score;
-	public event Action OnClickCloseButtonEvent;
+	public TextMeshProUGUI ResultText;
+	public TextMeshProUGUI ScoreText;
+	public event Action ClickCloseButtonEvent;
 
 	public void Show()
 	{
@@ -17,14 +15,24 @@ public class EndGameWindow : MonoBehaviour
 
 	public void SetFinalScore(int score)
 	{
-		Score.SetText($"{score}");
+		ScoreText.SetText($"{score}");
 	}
 
-	public void OnClickCloseButton() => OnClickCloseButtonEvent?.Invoke();
+	public void OnClickCloseButton() => ClickCloseButtonEvent?.Invoke();
 
-	public void SetNewRecordText() => Result.SetText("New record!\nCongratulations!");
+	public void SetResult(bool isNewRecord)
+	{
+		switch (isNewRecord)
+		{
+			case true:
+				ResultText.SetText("New record!\nCongratulations!");
+				break;
 
-	public void SetNoRecordText() => Result.SetText("Nice game!\nYou are best!");
+			case false:
+				ResultText.SetText("Nice game!\nYou are best!");
+				break;
+		}
+	}
 
 
 }

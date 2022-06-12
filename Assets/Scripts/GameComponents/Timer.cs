@@ -33,6 +33,7 @@ public class Timer : MonoBehaviour
 				seconds = 0;
 				minutes++;
 			}
+
 			if (_currentTime == 0)
 			{
 				minutes = targetMinuteDuration;
@@ -41,7 +42,6 @@ public class Timer : MonoBehaviour
 			_currentTime++;
 			TimerText.SetText(String.Format("{0:00}:{1:00}", minutes, seconds));
 		}
-
 		TimeEndEvent?.Invoke();
 	}
 
@@ -52,7 +52,6 @@ public class Timer : MonoBehaviour
 		_currentTime = 0;
 
 		StopAllCoroutines();
-		var timer = this.GetComponent<TextMeshProUGUI>();
-		timer.SetText(String.Format("{0:00}:{1:00}", minutes, seconds));
+		TimerText.SetText(String.Format("{0:00}:{1:00}", minutes, seconds));
 	}
 }

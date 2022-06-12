@@ -15,7 +15,7 @@ public static class NumberManager
 	private static int CalculateMaxPower(List<Block> blockList)
 	{
 		int maxPower = 3;
-		int maxPowerInList = FindMaxPowerOfBlocks(blockList);
+		int maxPowerInList = FindMaxBlockPower(blockList);
 		if (maxPowerInList > 5)
 		{
 			maxPower = maxPowerInList - 1;
@@ -26,7 +26,7 @@ public static class NumberManager
 	private static int CalculateMinPower(List<Block> blockList)
 	{
 		int minPower = 1;
-		int maxPowerInList = FindMaxPowerOfBlocks(blockList);
+		int maxPowerInList = FindMaxBlockPower(blockList);
 		if (maxPowerInList > 5)
 		{
 			minPower = maxPowerInList - 5;
@@ -34,14 +34,14 @@ public static class NumberManager
 		return minPower;
 	}
 
-	public static int FindMaxPowerOfBlocks(List<Block> blockList)
+	public static int FindMaxBlockPower(List<Block> blockList)
 	{
-		int maxBlockNumber = FindMaxNumberOfBlocks(blockList);
+		int maxBlockNumber = FindMaxBlockNumber(blockList);
 		int maxPower = (int)Mathf.Log(maxBlockNumber, 2);
 		return maxPower;
 	}
 
-	public static int FindMaxNumberOfBlocks(List<Block> blockList)
+	public static int FindMaxBlockNumber(List<Block> blockList)
 	{
 		int maxBlockNumber = 0;
 		for (int i = 0; i < blockList.Count; i++)

@@ -5,8 +5,9 @@ using TMPro;
 public class BlockCombiner : MonoBehaviour
 {
 	public AudioSource CombineSound;
+	private int _maxBlockDistance = 25;
 
-	public void CombineBlocks(List<Block> blockList)
+	public bool CombineBlocks(List<Block> blockList)
 	{
 		for (int i = 0; i < blockList.Count - 1; i++)
 		{
@@ -16,7 +17,7 @@ public class BlockCombiner : MonoBehaviour
 				{
 					float blocksDistance = Vector3.Distance(blockList[i].transform.position, blockList[j].transform.position);
 
-					if (blocksDistance < 25f)
+					if (blocksDistance < _maxBlockDistance)
 					{
 						CombineSound.Play();
 
@@ -26,9 +27,12 @@ public class BlockCombiner : MonoBehaviour
 						int combinedNumber = NumberManager.CombineBlockNumber(blockList[i].BlockNumber);
 						var textNumber = blockList[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
 						textNumber.SetText($"{combinedNumber}");
+
+						return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
 }

@@ -1,55 +1,51 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class BlockController : MonoBehaviour
 {
-	public Transform BlockTicker;
 	public Block BlockPrefab;
 	public BlockCombiner BlockCombiner;
+	public BlockTicker BlockTicker;
 	public TowerTicker TowerTicker;
-	public AudioSource ThrowingSound;
 	public GroundController GroundController;
+	public AudioSource ThrowingSound;
 
 	[HideInInspector]
-	public List<Block> BlockList = new List<Block>();
+	private List<Block> _tickerBlockList = new List<Block>();
+	public List<Block> TowerBlockList = new List<Block>();
 	public event Action CheckNewScore;
 
 	public void GenerateBlock()
 	{
-		Block block = BlockPrefab.CreateBlock(BlockPrefab, BlockTicker);
-		int blockNumber = NumberManager.GenerateBlockNumber(BlockList);
-		block.BlockNumber = blockNumber;
+		if (_tickerBlockList.Count == 0)
+		{
+			Block block = BlockPrefab.CreateBlock(BlockPrefab, BlockTicker.transform);
+			block.BlockNumber = NumberManager.GenerateBlockNumber(TowerBlockList);
+			block.BlockCollisionEvent += CheckNumbers;
+			block.BlockCollisionEvent += CheckDistance;
+			block.BlockCollisionEvent += GenerateBlock;
+			_tickerBlockList.Add(block);
 
-		BlockTicker.rotation = Quaternion.Euler(0, 0, 0);
-		BlockTicker.gameObject.SetActive(true);
-		BlockList.Add(block);
+			BlockTicker.ResetTicker();
+		}
 	}
 
 	public void ThrowBlock()
 	{
 		ThrowingSound.Play();
 
-		var block = BlockList[BlockList.Count - 1];
-		block.transform.rotation = Quaternion.Euler(0, 0, 0);
-		var blockRigidbody = block.transform.GetComponent<Rigidbody>();
-		blockRigidbody.isKinematic = false;
-		blockRigidbody.AddForce(0, -50000, 0, ForceMode.Force);
+		if (_tickerBlockList.Count == 0)
+		{
+			GenerateBlock();
+		}
+
+		var block = _tickerBlockList[0];
+		TowerBlockList.Add(block);
+		_tickerBlockList.Clear();
+		block.PrepareThrowingBlock();
+
 		block.transform.SetParent(TowerTicker.transform);
-
-		block.OnTriggerEvent += CheckNumbers;
-		block.OnTriggerEvent += CheckDistance;
-
-		StartCoroutine(CreateNewBlockAfterPause());
-	}
-
-	private IEnumerator CreateNewBlockAfterPause()
-	{
-		yield return new WaitForSeconds(1);
-		CheckNewScore?.Invoke();
-		BlockTicker.gameObject.SetActive(false);
-		GenerateBlock();
 	}
 
 	public void ResetBlocks()
@@ -64,27 +60,34 @@ public class BlockController : MonoBehaviour
 			Destroy(BlockTicker.transform.GetChild(i).gameObject);
 		}
 
-		BlockList.Clear();
+		_tickerBlockList.Clear();
+		TowerBlockList.Clear();
+
 		GroundController.ResetGroundPosition();
 	}
 
 	public void CheckNumbers()
 	{
-		BlockCombiner.CombineBlocks(BlockList);
+		if (BlockCombiner.CombineBlocks(TowerBlockList))
+		{
+			CheckNumbers();
+			CheckDistance();
+		}
+
+		CheckNewScore?.Invoke();
 	}
 
 	private void CheckDistance()
 	{
-		if (BlockList.Count > 2)
+		if (TowerBlockList.Count > 2)
 		{
 			if (GroundController.isTooHigh(FindTopBlockTower()))
 			{
-				GroundController.MoveGroundDown(FindTopBlockTower());
 				TowerTicker.DownTickerTower();
 			}
+
 			if (GroundController.isTooLow(FindTopBlockTower()))
 			{
-				GroundController.MoveGroundUp(FindTopBlockTower());
 				TowerTicker.UpTickerTower();
 			}
 		}
@@ -92,13 +95,13 @@ public class BlockController : MonoBehaviour
 
 	private float FindTopBlockTower()
 	{
-		float maxY = BlockList[0].transform.position.y;
+		float maxY = TowerBlockList[0].transform.position.y;
 
-		for (int i = 0; i < BlockList.Count - 1; i++)
+		for (int i = 0; i < TowerBlockList.Count - 1; i++)
 		{
-			if (maxY < BlockList[i].transform.position.y)
+			if (maxY < TowerBlockList[i].transform.position.y)
 			{
-				maxY = BlockList[i].transform.position.y;
+				maxY = TowerBlockList[i].transform.position.y;
 			}
 		}
 		return maxY;

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 
 public class TopUI : MonoBehaviour
@@ -9,12 +6,12 @@ public class TopUI : MonoBehaviour
 	public Score Score;
 	public Timer Timer;
 
-	public event Action OnClickMenuButtonEvent;
-
-	public void OnClickMenuButton() => OnClickMenuButtonEvent?.Invoke();
+	public event Action ClickMenuButtonEvent;
 
 	public void Show()
 	{
 		this.gameObject.SetActive(true);
 	}
+
+	public void OnClickMenuButton() => ClickMenuButtonEvent?.Invoke();
 }
