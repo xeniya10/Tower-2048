@@ -22,16 +22,16 @@ public class EndGameWindow : MonoBehaviour
 
 	public void SetResult(bool isNewRecord)
 	{
-		switch (isNewRecord)
-		{
-			case true:
-				ResultText.SetText("New record!\nCongratulations!");
-				break;
-
-			case false:
-				ResultText.SetText("Nice game!\nYou are best!");
-				break;
-		}
+		// switch (isNewRecord)
+		// {
+		// 	case true:
+		// 		ResultText.SetText("New record!\nCongratulations!");
+		// 		break;
+		//
+		// 	case false:
+		// 		ResultText.SetText("Nice game!\nYou are best!");
+		// 		break;
+		// }
 	}
 
 

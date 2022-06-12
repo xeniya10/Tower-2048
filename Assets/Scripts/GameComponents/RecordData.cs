@@ -8,17 +8,16 @@ public class RecordData
 	public DateTime DateTime;
 	public int Score;
 
-	private string _json;
 	private const string _key = "RecordsList";
 
-	public void Serialize(List<RecordData> list)
+	// public static void Serialize(List<RecordData> list)
 	{
 		PlayerPrefs.DeleteKey(_key);
-		_json = JsonConvert.SerializeObject(list, Formatting.Indented);
-		PlayerPrefs.SetString(_key, _json);
+		var json = JsonConvert.SerializeObject(list, Formatting.Indented);
+		PlayerPrefs.SetString(_key, json);
 	}
 
-	public List<RecordData> Deserialize()
+	// public static List<RecordData> Deserialize()
 	{
 		var recordsList = JsonConvert.DeserializeObject<List<RecordData>>(PlayerPrefs.GetString(_key));
 		return recordsList;

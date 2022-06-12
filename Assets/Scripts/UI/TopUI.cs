@@ -4,7 +4,7 @@ using System;
 public class TopUI : MonoBehaviour
 {
 	public Score Score;
-	public Timer Timer;
+	// public Timer Timer;
 
 	public event Action ClickMenuButtonEvent;
 

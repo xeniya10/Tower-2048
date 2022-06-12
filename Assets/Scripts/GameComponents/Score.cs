@@ -12,10 +12,10 @@ public class Score : MonoBehaviour
 		ScoreText.SetText("0");
 	}
 
-	public void SetScore(List<Block> list)
-	{
-		ScoreText.text = NumberManager.FindMaxBlockNumber(list).ToString();
-	}
+	// public void SetScore(List<Block> list)
+	// {
+		// ScoreText.text = NumberManager.FindMaxBlockNumber(list).ToString();
+	// }
 
 	public int GetScore()
 	{

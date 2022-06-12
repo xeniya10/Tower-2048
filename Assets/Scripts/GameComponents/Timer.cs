@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 {
 	public TextMeshProUGUI TimerText;
 
-	private int _currentTime = 0;
+	// private int _currentTime = 0;
 	private int _secondsPerMinute = 60;
 
 	public event Action TimeEndEvent;
@@ -17,7 +17,7 @@ public class Timer : MonoBehaviour
 		StartCoroutine(GetTime(targetMinuteDuration));
 	}
 
-	private IEnumerator GetTime(int targetMinuteDuration)
+	// private IEnumerator GetTime(int targetMinuteDuration)
 	{
 		int targetSecondDuration = targetMinuteDuration * _secondsPerMinute;
 
@@ -28,7 +28,7 @@ public class Timer : MonoBehaviour
 			int seconds = _secondsPerMinute - _currentTime % _secondsPerMinute;
 			int minutes = targetMinuteDuration - (_currentTime + _secondsPerMinute) / _secondsPerMinute;
 
-			if (seconds % _secondsPerMinute == 0)
+			if (seconds == _secondsPerMinute)
 			{
 				seconds = 0;
 				minutes++;

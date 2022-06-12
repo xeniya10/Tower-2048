@@ -10,9 +10,9 @@ public class RecordController : MonoBehaviour
 	public Transform RecordContent;
 
 	private List<Record> _recordRowList = new List<Record>();
-	private List<RecordData> _recordList = new List<RecordData>();
-	private RecordData _recordData = new RecordData();
-	private int _listCapacity = 10;
+	private List<RecordData> _recordDataList = new List<RecordData>();
+	
+	// private int _listCapacity = 10;
 
 	public event Action ClickCloseButtonEvent;
 
@@ -20,7 +20,7 @@ public class RecordController : MonoBehaviour
 	{
 		var score = Score.GetScore();
 
-		if (_recordList.Count == 0 || score > _recordList[_recordList.Count - 1].Score)
+		if (_recordDataList.Count == 0 || score > _recordDataList[_recordDataList.Count - 1].Score)
 		{
 			GenerateRecord(score);
 			SaveRecordList();
@@ -35,12 +35,12 @@ public class RecordController : MonoBehaviour
 		var record = new RecordData();
 		record.Score = score;
 		record.DateTime = DateTime.Now;
-		_recordList.Add(record);
+		_recordDataList.Add(record);
 	}
 
 	private void SaveRecordList()
 	{
-		var sortedRecords = _recordList.OrderByDescending(record => record.Score).ToList();
+		var sortedRecords = _recordDataList.OrderByDescending(record => record.Score).ToList();
 
 		if (sortedRecords.Count > _listCapacity)
 		{
@@ -48,37 +48,37 @@ public class RecordController : MonoBehaviour
 				sortedRecords.RemoveAt(indexRecord);
 		}
 
-		_recordData.Serialize(sortedRecords);
+		RecordData.Serialize(sortedRecords);
 	}
 
 	private void LoadRecordList()
 	{
-		_recordList = _recordData.Deserialize();
+		_recordDataList = RecordData.Deserialize();
 
 		if (_recordRowList.Count == 0)
 		{
 			CreateRecordRow();
 		}
 
-		for (int recordIndex = 0; recordIndex < _recordList?.Count; recordIndex++)
+		for (int recordIndex = 0; recordIndex < _recordDataList?.Count; recordIndex++)
 		{
 			var recordRow = _recordRowList[recordIndex];
-			recordRow.Initialize(recordIndex + 1, _recordList[recordIndex].DateTime, _recordList[recordIndex].Score);
+			recordRow.Initialize(recordIndex + 1, _recordDataList[recordIndex].DateTime, _recordDataList[recordIndex].Score);
 			recordRow.gameObject.SetActive(true);
 		}
 	}
 
 	private void CreateRecordRow()
 	{
-		for (int recordIndex = 0; recordIndex < _listCapacity; recordIndex++)
+		for (int i = 0; i < _listCapacity; i++)
 		{
 			var recordRow = Instantiate(RecordRowPrefab, RecordContent);
 			_recordRowList.Add(recordRow);
-			_recordRowList[recordIndex].gameObject.SetActive(false);
+			_recordRowList[i].gameObject.SetActive(false);
 		}
 	}
 
-	public void Show()
+	// public void Show()
 	{
 		this.gameObject.SetActive(true);
 	}

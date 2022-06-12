@@ -19,12 +19,12 @@ public class TowerTicker : MonoBehaviour
         var rotation = Quaternion.Lerp(towerStartAngle, towerEndAngle, (Mathf.Sin(time * _towerSpeed)) / 2 + 0.5f);
         return rotation;
     }
-    public void UpTickerTower()
+    // public void UpTickerTower()
     {
         _towerAngle += _stepTowerAngle;
         _towerSpeed += _stepTowerSpeed;
     }
-    public void DownTickerTower()
+    // public void DownTickerTower()
     {
         _towerAngle -= _stepTowerAngle;
         _towerSpeed -= _stepTowerSpeed;

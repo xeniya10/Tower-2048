@@ -11,6 +11,9 @@ public class StartMenuWindow : MonoBehaviour
 	{
 		this.gameObject.SetActive(true);
 	}
+
+	public void Hide();
+	
 	public void OnClickStartButton() => ClickStartButtonEvent?.Invoke();
 	public void OnClickRecordsButton() => ClickRecordsButtonEvent?.Invoke();
 	public void OnClickQuitButton() => ClickQuitButtonEvent?.Invoke();

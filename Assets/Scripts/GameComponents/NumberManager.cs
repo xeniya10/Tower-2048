@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class NumberManager
+// public static class NumberManager
 {
 	public static int GenerateBlockNumber(List<Block> blockList)
 	{

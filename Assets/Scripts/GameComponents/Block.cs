@@ -8,17 +8,15 @@ public class Block : MonoBehaviour
 	public Rigidbody BlockRigidbody;
 	public event Action BlockCollisionEvent;
 
+	private int _blockValue;
+
 	public int BlockNumber
 	{
-		get
-		{
-			int blockNumber = Int32.Parse(BlockText.text);
-			return blockNumber;
-		}
+		get => _blockValue;
 		set
 		{
-			int blockNumber = value;
-			BlockText.SetText($"{blockNumber}");
+			_blockValue = value;
+			BlockText.SetText($"{_blockValue}");
 		}
 	}
 	public Block CreateBlock(Block blockPrefab, Transform blockParent)
@@ -29,7 +27,7 @@ public class Block : MonoBehaviour
 		return block;
 	}
 
-	public void PrepareThrowingBlock()
+	public void Throw()
 	{
 		this.transform.rotation = Quaternion.Euler(0, 0, 0);
 		BlockRigidbody.isKinematic = false;

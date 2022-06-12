@@ -10,7 +10,7 @@ public class GameplayController : MonoBehaviour
 	public EndGameWindow EndGameWindow;
 
 	[HideInInspector]
-	public int GameTime = 3;
+	// public int GameTime = 3;
 
 	private void Awake()
 	{
@@ -30,17 +30,17 @@ public class GameplayController : MonoBehaviour
 		TopUI.Timer.SetTimer(GameTime);
 	}
 
-	private void SwitchTimeScale(bool DoTimeRun)
+	// private void SwitchTimeScale(bool DoTimeRun)
 	{
-		switch (DoTimeRun)
-		{
-			case true:
-				Time.timeScale = 1;
-				break;
-			case false:
-				Time.timeScale = 0;
-				break;
-		}
+		// switch (DoTimeRun)
+		// {
+		// 	case true:
+		// 		Time.timeScale = 1;
+		// 		break;
+		// 	case false:
+		// 		Time.timeScale = 0;
+		// 		break;
+		// }
 	}
 
 	private void ContinuePlay()
@@ -68,14 +68,16 @@ public class GameplayController : MonoBehaviour
 	}
 	private void QuitGame()
 	{
-		UnityEditor.EditorApplication.isPlaying = false;
+		UnityEditor.EditorApplication.isPlaying = false; 
 		Application.Quit();
 	}
-	private void OpenStartMenu()
+	
+	// private void OpenStartMenu()
 	{
 		HideWindows();
 		StartMenuWindow.Show();
 	}
+	
 	private void OpenTopMenu()
 	{
 		SwitchTimeScale(false);
@@ -83,6 +85,7 @@ public class GameplayController : MonoBehaviour
 		TopUI.Show();
 		TopMenuWindow.Show();
 	}
+	
 	private void OpenRecords()
 	{
 		HideWindows();
@@ -90,7 +93,7 @@ public class GameplayController : MonoBehaviour
 	}
 	private void HideWindows()
 	{
-		SwitchTimeScale(false);
+		// SwitchTimeScale(false);
 
 		TopMenuWindow?.gameObject.SetActive(false);
 		StartMenuWindow?.gameObject.SetActive(false);
@@ -104,19 +107,19 @@ public class GameplayController : MonoBehaviour
 	}
 	private void SetScore()
 	{
-		TopUI.Score.SetScore(BlockController.TowerBlockList);
+		// TopUI.Score.SetScore(BlockController.TowerBlockList);
 	}
 
-	private void SubscribeEvent()
+	// private void SubscribeEvent()
 	{
 		StartMenuWindow.ClickStartButtonEvent += StartPlay;
 		StartMenuWindow.ClickRecordsButtonEvent += OpenRecords;
 		StartMenuWindow.ClickQuitButtonEvent += QuitGame;
 
-		BlockController.CheckNewScore += SetScore;
+		BlockController.UpdateScore += SetScore;
 
 		TopUI.ClickMenuButtonEvent += OpenTopMenu;
-		TopUI.Timer.TimeEndEvent += EndGame;
+		// TopUI.Timer.TimeEndEvent += EndGame;
 
 		TopMenuWindow.ClickContinueButtonEvent += ContinuePlay;
 		TopMenuWindow.ClickRestartButtonEvent += StartPlay;

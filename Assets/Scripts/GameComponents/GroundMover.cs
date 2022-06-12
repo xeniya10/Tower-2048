@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GroundMover : MonoBehaviour
 {
-	private Vector3 _startGroundPosition = Vector3.zero;
+	private Vector3 _startGroundPosition;
+	
 	private void Start()
 	{
 		_startGroundPosition = this.transform.position;
@@ -30,7 +31,7 @@ public class GroundMover : MonoBehaviour
 		}
 	}
 
-	public void SetStartPosition()
+	public void ResetPosition()
 	{
 		this.transform.position = _startGroundPosition;
 	}

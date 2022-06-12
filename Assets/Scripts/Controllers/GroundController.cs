@@ -38,6 +38,6 @@ public class GroundController : MonoBehaviour
 	}
 	public void ResetGroundPosition()
 	{
-		GroundMover.SetStartPosition();
+		GroundMover.ResetPosition();
 	}
 }
