@@ -2,16 +2,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-	[SerializeField] private AudioSource DropingSound;
-	[SerializeField] private AudioSource UnitingSound;
+    [SerializeField] private AudioSource DropingSound;
+    [SerializeField] private AudioSource UnitingSound;
 
-	public void PlayDropingSound()
-	{
-		DropingSound.Play();
-	}
+    public void PlayDropingSound() => DropingSound.Play();
 
-	public void PlayUnitingSound()
-	{
-		UnitingSound.Play();
-	}
+    public void PlayUnitingSound() => UnitingSound.Play();
 }

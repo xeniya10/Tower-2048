@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 7989282496047252173}
   - component: {fileID: 7062620920786980681}
   m_Layer: 0
-  m_Name: Record
+  m_Name: RecordRow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

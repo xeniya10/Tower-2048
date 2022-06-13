@@ -448,8 +448,8 @@ MonoBehaviour:
   m_Content: {fileID: 732806061}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 0
-  m_Elasticity: 0.05
+  m_MovementType: 1
+  m_Elasticity: 3
   m_Inertia: 1
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 10
@@ -462,19 +462,7 @@ MonoBehaviour:
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
-        m_MethodName: set_pivot
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &106798653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4418,8 +4406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd0de2e43fe5ab4ca339b681e363200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RecordRowPrefab: {fileID: 7062620920786980681, guid: 82ca890025d498c4fb062f608a211675, type: 3}
-  RecordContent: {fileID: 732806061}
+  _recordRowPrefab: {fileID: 7062620920786980681, guid: 82ca890025d498c4fb062f608a211675, type: 3}
+  _recordContent: {fileID: 732806061}
 --- !u!4 &1875920499
 Transform:
   m_ObjectHideFlags: 0

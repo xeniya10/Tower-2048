@@ -1,19 +1,8 @@
 public static class Score
 {
-	private static int ScoreNumber;
+    private static int _number;
 
-	public static void SetScore(int score)
-	{
-		ScoreNumber = score;
-	}
+    public static int Number { get => _number; set => _number = value; }
 
-	public static void ResetScore()
-	{
-		ScoreNumber = 0;
-	}
-
-	public static int GetScore()
-	{
-		return ScoreNumber;
-	}
+    public static void Reset() => _number = 0;
 }
