@@ -4,36 +4,39 @@ using System;
 
 public class Block : MonoBehaviour
 {
-	public TextMeshProUGUI BlockText;
-	public Rigidbody BlockRigidbody;
+	[SerializeField] private TextMeshProUGUI _blockText;
+	[SerializeField] private Rigidbody _blockRigidbody;
+
+	private int _blockNumber;
+
 	public event Action BlockCollisionEvent;
 
 	public int BlockNumber
 	{
-		get
-		{
-			int blockNumber = Int32.Parse(BlockText.text);
-			return blockNumber;
-		}
+		get => _blockNumber;
+
 		set
 		{
-			int blockNumber = value;
-			BlockText.SetText($"{blockNumber}");
+			_blockNumber = value;
+			_blockText.SetText($"{_blockNumber}");
 		}
 	}
-	public Block CreateBlock(Block blockPrefab, Transform blockParent)
+
+	public Block Create(Block blockPrefab, Transform blockParent)
 	{
-		BlockRigidbody.useGravity = true;
-		BlockRigidbody.isKinematic = true;
+		_blockRigidbody.useGravity = true;
+		_blockRigidbody.isKinematic = true;
 		Block block = Instantiate(blockPrefab, blockParent);
 		return block;
 	}
 
-	public void PrepareThrowingBlock()
+	public void Destroy() => Destroy(gameObject);
+
+	public void Drop()
 	{
-		this.transform.rotation = Quaternion.Euler(0, 0, 0);
-		BlockRigidbody.isKinematic = false;
-		BlockRigidbody.AddForce(0, -50000, 0, ForceMode.Force);
+		transform.rotation = Quaternion.Euler(0, 0, 0);
+		_blockRigidbody.isKinematic = false;
+		_blockRigidbody.AddForce(0, -50000, 0, ForceMode.Force);
 	}
 
 	public void OnCollisionEnter(Collision collision) => BlockCollisionEvent?.Invoke();

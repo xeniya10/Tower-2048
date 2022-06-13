@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class NumberManager
+public static class BlockNumberCalculator
 {
 	public static int GenerateBlockNumber(List<Block> blockList)
 	{
@@ -54,7 +54,7 @@ public static class NumberManager
 		return maxBlockNumber;
 	}
 
-	public static int CombineBlockNumber(int blockNumber)
+	public static int CalculateUnitedBlockNumber(int blockNumber)
 	{
 		float numberPower = Mathf.Log(blockNumber, 2);
 		int combinedNumber = (int)Mathf.Pow(2f, numberPower + 1);

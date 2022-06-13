@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class GroundController : MonoBehaviour
 {
-	public GroundMover GroundMover;
+	[SerializeField] private GroundMover _groundMover;
 
-	private float _maxBlockPosition = -13f;
-	private float _minBlockPosition = -36f;
+	private float _maxBlockPosition = -20f;
+	private float _minBlockPosition = -40f;
 	private float _positionGap = 3f;
 
 	public bool isTooHigh(float topTowerBlockPosition)
@@ -17,6 +17,7 @@ public class GroundController : MonoBehaviour
 		}
 		return false;
 	}
+
 	public bool isTooLow(float topTowerBlockPosition)
 	{
 		if (topTowerBlockPosition < _minBlockPosition)
@@ -26,18 +27,21 @@ public class GroundController : MonoBehaviour
 		}
 		return false;
 	}
+
 	private void MoveGroundDown(float topTowerBlockPosition)
 	{
 		var difference = Mathf.Abs(topTowerBlockPosition - _maxBlockPosition) + _positionGap;
-		StartCoroutine(GroundMover.DownGround(difference));
+		StartCoroutine(_groundMover.DownGround(difference));
 	}
+
 	private void MoveGroundUp(float topTowerBlockPosition)
 	{
 		var difference = Mathf.Abs(topTowerBlockPosition - _minBlockPosition) + _positionGap;
-		StartCoroutine(GroundMover.UpGround(difference));
+		StartCoroutine(_groundMover.UpGround(difference));
 	}
+
 	public void ResetGroundPosition()
 	{
-		GroundMover.SetStartPosition();
+		_groundMover.ResetPosition();
 	}
 }

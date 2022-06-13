@@ -1,25 +1,19 @@
-using System;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-
-public class Score : MonoBehaviour
+public static class Score
 {
-	public TextMeshProUGUI ScoreText;
+	private static int ScoreNumber;
 
-	public void ResetScore()
+	public static void SetScore(int score)
 	{
-		ScoreText.SetText("0");
+		ScoreNumber = score;
 	}
 
-	public void SetScore(List<Block> list)
+	public static void ResetScore()
 	{
-		ScoreText.text = NumberManager.FindMaxBlockNumber(list).ToString();
+		ScoreNumber = 0;
 	}
 
-	public int GetScore()
+	public static int GetScore()
 	{
-		int scoreNumber = Int32.Parse(ScoreText.text);
-		return scoreNumber;
+		return ScoreNumber;
 	}
 }

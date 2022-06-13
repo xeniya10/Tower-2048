@@ -9,10 +9,17 @@ public class TopMenuWindow : MonoBehaviour
 
 	public void Show()
 	{
-		this.gameObject.SetActive(true);
+		gameObject.SetActive(true);
+	}
+
+	public void Hide()
+	{
+		gameObject.SetActive(false);
 	}
 
 	public void OnClickContinueButton() => ClickContinueButtonEvent?.Invoke();
+
 	public void OnClickRestartButton() => ClickRestartButtonEvent?.Invoke();
+
 	public void OnClickQuitButton() => ClickQuitButtonEvent?.Invoke();
 }

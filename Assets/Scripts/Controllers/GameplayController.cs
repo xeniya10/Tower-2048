@@ -2,128 +2,163 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
-	public BlockController BlockController;
-	public RecordController RecordController;
-	public TopUI TopUI;
-	public StartMenuWindow StartMenuWindow;
-	public TopMenuWindow TopMenuWindow;
-	public EndGameWindow EndGameWindow;
+	[SerializeField] private BlockController _blockController;
+	[SerializeField] private GroundController _groundController;
+	[SerializeField] private RecordController _recordController;
+	[SerializeField] private Timer _timer;
+	[SerializeField] private TopBar _topBar;
+	[SerializeField] private StartMenuWindow _startMenuWindow;
+	[SerializeField] private RecordWindow _recordWindow;
+	[SerializeField] private TopMenuWindow _topMenuWindow;
+	[SerializeField] private EndGameWindow _endGameWindow;
 
-	[HideInInspector]
-	public int GameTime = 3;
+	public int GameDurationInMinutes = 1;
 
 	private void Awake()
 	{
 		HideWindows();
 		SubscribeEvent();
-		OpenStartMenu();
+		ShowStartMenu();
 	}
+
 	private void StartPlay()
 	{
 		ResetGame();
 		HideWindows();
-		TopUI.Show();
+		_topBar.Show();
 
-		BlockController.GenerateBlock();
-
-		SwitchTimeScale(true);
-		TopUI.Timer.SetTimer(GameTime);
-	}
-
-	private void SwitchTimeScale(bool DoTimeRun)
-	{
-		switch (DoTimeRun)
-		{
-			case true:
-				Time.timeScale = 1;
-				break;
-			case false:
-				Time.timeScale = 0;
-				break;
-		}
+		_blockController.GenerateBlock();
+		RunTime();
+		StartTimer();
 	}
 
 	private void ContinuePlay()
 	{
 		HideWindows();
-		SwitchTimeScale(true);
-		TopUI.Show();
-		TopUI.Timer.SetTimer(GameTime);
+		RunTime();
+		_topBar.Show();
+		StartTimer();
 	}
+
 	private void ResetGame()
 	{
-		BlockController.ResetBlocks();
-		TopUI.Timer.ResetTimer(GameTime);
-		TopUI.Score.ResetScore();
+		_blockController.ResetBlocks();
+		_groundController.ResetGroundPosition();
+		ResetTimer();
+		ResetScore();
 	}
+
 	private void EndGame()
 	{
 		HideWindows();
 
-		EndGameWindow.SetFinalScore(TopUI.Score.GetScore());
-		EndGameWindow.SetResult(RecordController.IsNewRecord());
-		EndGameWindow.Show();
+		_endGameWindow.SetFinalScore(Score.GetScore());
+		_endGameWindow.SetResult(_recordController.IsNewRecord());
+		_endGameWindow.Show();
 
-		BlockController.ResetBlocks();
+		_blockController.ResetBlocks();
+		_groundController.ResetGroundPosition();
 	}
+
 	private void QuitGame()
 	{
 		UnityEditor.EditorApplication.isPlaying = false;
 		Application.Quit();
 	}
-	private void OpenStartMenu()
+
+	private void ShowStartMenu()
 	{
 		HideWindows();
-		StartMenuWindow.Show();
+		_startMenuWindow.Show();
 	}
-	private void OpenTopMenu()
+
+	private void ShowTopMenu()
 	{
-		SwitchTimeScale(false);
+		PauseTime();
 		HideWindows();
-		TopUI.Show();
-		TopMenuWindow.Show();
+		_topBar.Show();
+		_topMenuWindow.Show();
 	}
-	private void OpenRecords()
+
+	private void ShowRecords()
 	{
 		HideWindows();
-		RecordController.Show();
+		_recordWindow.Show();
 	}
+
 	private void HideWindows()
 	{
-		SwitchTimeScale(false);
+		PauseTime();
 
-		TopMenuWindow?.gameObject.SetActive(false);
-		StartMenuWindow?.gameObject.SetActive(false);
-		RecordController?.gameObject.SetActive(false);
-		EndGameWindow?.gameObject.SetActive(false);
-		TopUI?.gameObject.SetActive(false);
+		_topMenuWindow.Hide();
+		_startMenuWindow.Hide();
+		_recordWindow.Hide();
+		_endGameWindow.Hide();
+		_topBar.Hide();
 	}
+
 	public void OnTouchScreen()
 	{
-		BlockController.ThrowBlock();
+		_blockController.DropBlock();
 	}
+
+	private void PauseTime()
+	{
+		Time.timeScale = 0;
+	}
+
+	private void RunTime()
+	{
+		Time.timeScale = 1.2f;
+	}
+
+	private void StartTimer()
+	{
+		_timer.RunTimer(GameDurationInMinutes);
+	}
+
+	private void UpdateTimer()
+	{
+		_topBar.SetTime(_timer.Minutes, _timer.Seconds);
+	}
+
+	private void ResetTimer()
+	{
+		_timer.ResetTimer(GameDurationInMinutes);
+	}
+
 	private void SetScore()
 	{
-		TopUI.Score.SetScore(BlockController.TowerBlockList);
+		int score = BlockNumberCalculator.FindMaxBlockNumber(_blockController.BlockList);
+		Score.SetScore(score);
+		_topBar.SetScore();
+	}
+
+	private void ResetScore()
+	{
+		Score.ResetScore();
+		_topBar.SetScore();
 	}
 
 	private void SubscribeEvent()
 	{
-		StartMenuWindow.ClickStartButtonEvent += StartPlay;
-		StartMenuWindow.ClickRecordsButtonEvent += OpenRecords;
-		StartMenuWindow.ClickQuitButtonEvent += QuitGame;
+		_timer.UpdateTimeEvent += UpdateTimer;
+		_timer.TimeEndEvent += EndGame;
 
-		BlockController.CheckNewScore += SetScore;
+		_startMenuWindow.ClickStartButtonEvent += StartPlay;
+		_startMenuWindow.ClickRecordsButtonEvent += ShowRecords;
+		_startMenuWindow.ClickQuitButtonEvent += QuitGame;
 
-		TopUI.ClickMenuButtonEvent += OpenTopMenu;
-		TopUI.Timer.TimeEndEvent += EndGame;
+		_blockController.UpdateScore += SetScore;
 
-		TopMenuWindow.ClickContinueButtonEvent += ContinuePlay;
-		TopMenuWindow.ClickRestartButtonEvent += StartPlay;
-		TopMenuWindow.ClickQuitButtonEvent += QuitGame;
+		_topBar.ClickMenuButtonEvent += ShowTopMenu;
 
-		RecordController.ClickCloseButtonEvent += OpenStartMenu;
+		_topMenuWindow.ClickContinueButtonEvent += ContinuePlay;
+		_topMenuWindow.ClickRestartButtonEvent += StartPlay;
+		_topMenuWindow.ClickQuitButtonEvent += QuitGame;
 
-		EndGameWindow.ClickCloseButtonEvent += OpenStartMenu;
+		_recordWindow.ClickCloseButtonEvent += ShowStartMenu;
+
+		_endGameWindow.ClickCloseButtonEvent += ShowStartMenu;
 	}
 }

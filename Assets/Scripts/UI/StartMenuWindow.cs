@@ -9,9 +9,17 @@ public class StartMenuWindow : MonoBehaviour
 
 	public void Show()
 	{
-		this.gameObject.SetActive(true);
+		gameObject.SetActive(true);
 	}
+
+	public void Hide()
+	{
+		gameObject.SetActive(false);
+	}
+
 	public void OnClickStartButton() => ClickStartButtonEvent?.Invoke();
+
 	public void OnClickRecordsButton() => ClickRecordsButtonEvent?.Invoke();
+
 	public void OnClickQuitButton() => ClickQuitButtonEvent?.Invoke();
 }

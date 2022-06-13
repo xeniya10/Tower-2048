@@ -1,107 +1,100 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static BlockUniter;
 
 public class BlockController : MonoBehaviour
 {
-	public Block BlockPrefab;
-	public BlockCombiner BlockCombiner;
-	public BlockTicker BlockTicker;
-	public TowerTicker TowerTicker;
-	public GroundController GroundController;
-	public AudioSource ThrowingSound;
+	[SerializeField] private Block _blockPrefab;
+	[SerializeField] private BlockTicker _blockTicker;
+	[SerializeField] private TowerTicker _towerTicker;
+	[SerializeField] private GroundController _groundController;
+	[SerializeField] private AudioManager _audioManager;
 
-	[HideInInspector]
-	private List<Block> _tickerBlockList = new List<Block>();
-	public List<Block> TowerBlockList = new List<Block>();
-	public event Action CheckNewScore;
+	[HideInInspector] public List<Block> BlockList = new List<Block>();
+	private Block _swingBlock = null;
+
+	public event Action UpdateScore;
 
 	public void GenerateBlock()
 	{
-		if (_tickerBlockList.Count == 0)
+		if (_swingBlock == null)
 		{
-			Block block = BlockPrefab.CreateBlock(BlockPrefab, BlockTicker.transform);
-			block.BlockNumber = NumberManager.GenerateBlockNumber(TowerBlockList);
+			Block block = _blockPrefab.Create(_blockPrefab, _blockTicker.transform);
+			block.BlockNumber = BlockNumberCalculator.GenerateBlockNumber(BlockList);
 			block.BlockCollisionEvent += CheckNumbers;
-			block.BlockCollisionEvent += CheckDistance;
+			block.BlockCollisionEvent += CheckDistanceBetweenBlocks;
 			block.BlockCollisionEvent += GenerateBlock;
-			_tickerBlockList.Add(block);
+			_swingBlock = block;
 
-			BlockTicker.ResetTicker();
+			_blockTicker.ResetTicker();
 		}
 	}
 
-	public void ThrowBlock()
+	public void DropBlock()
 	{
-		ThrowingSound.Play();
+		GenerateBlock();
 
-		if (_tickerBlockList.Count == 0)
-		{
-			GenerateBlock();
-		}
+		_audioManager.PlayDropingSound();
 
-		var block = _tickerBlockList[0];
-		TowerBlockList.Add(block);
-		_tickerBlockList.Clear();
-		block.PrepareThrowingBlock();
+		var block = _swingBlock;
+		BlockList.Add(block);
+		block.Drop();
+		_towerTicker.ChangeParent(block);
 
-		block.transform.SetParent(TowerTicker.transform);
+		_swingBlock = null;
 	}
 
 	public void ResetBlocks()
 	{
-		for (int i = 0; i < TowerTicker.transform.childCount; i++)
-		{
-			Destroy(TowerTicker.transform.GetChild(i).gameObject);
-		}
+		_blockTicker.DestroyChildren();
+		_towerTicker.DestroyChildren();
 
-		for (int i = 0; i < BlockTicker.transform.childCount; i++)
-		{
-			Destroy(BlockTicker.transform.GetChild(i).gameObject);
-		}
-
-		_tickerBlockList.Clear();
-		TowerBlockList.Clear();
-
-		GroundController.ResetGroundPosition();
+		_swingBlock = null;
+		BlockList.Clear();
 	}
 
-	public void CheckNumbers()
+	private void CheckNumbers()
 	{
-		if (BlockCombiner.CombineBlocks(TowerBlockList))
+		if (TryUniteBlocks(BlockList))
 		{
+			_audioManager.PlayUnitingSound();
 			CheckNumbers();
-			CheckDistance();
+			CheckDistanceBetweenBlocks();
 		}
 
-		CheckNewScore?.Invoke();
+		UpdateScore?.Invoke();
 	}
 
-	private void CheckDistance()
+	private void CheckDistanceBetweenBlocks()
 	{
-		if (TowerBlockList.Count > 2)
+		if (BlockList.Count > 2)
 		{
-			if (GroundController.isTooHigh(FindTopBlockTower()))
+			float yMaxPos = GetTowerMaxY();
+
+			if (_groundController.isTooHigh(yMaxPos))
 			{
-				TowerTicker.DownTickerTower();
+				_towerTicker.DecreaseTowerSwinging();
+				return;
 			}
 
-			if (GroundController.isTooLow(FindTopBlockTower()))
+			if (_groundController.isTooLow(yMaxPos))
 			{
-				TowerTicker.UpTickerTower();
+				_towerTicker.IncreaseTowerSwinging();
+				return;
 			}
 		}
 	}
 
-	private float FindTopBlockTower()
+	private float GetTowerMaxY()
 	{
-		float maxY = TowerBlockList[0].transform.position.y;
+		float maxY = BlockList[0].transform.position.y;
 
-		for (int i = 0; i < TowerBlockList.Count - 1; i++)
+		for (int i = 0; i < BlockList.Count - 1; i++)
 		{
-			if (maxY < TowerBlockList[i].transform.position.y)
+			if (maxY < BlockList[i].transform.position.y)
 			{
-				maxY = TowerBlockList[i].transform.position.y;
+				maxY = BlockList[i].transform.position.y;
 			}
 		}
 		return maxY;
